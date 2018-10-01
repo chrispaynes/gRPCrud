@@ -13,7 +13,7 @@ message Todo {
 
 message CreateRequest {
     string api = 1;
-    Todo todo = 2;
+    Todo Todo = 2;
 }
 
 message CreateResponse {
@@ -21,6 +21,16 @@ message CreateResponse {
     int64 id = 2;
 }
 
+message ReadAllRequest {
+    string api = 1;
+}
+
+message ReadAllResponse {
+    string api = 1;
+    repeated Todo Todos = 2;
+}
+
 service TodoService {
     rpc Create(CreateRequest) returns (CreateResponse);
+    rpc ReadAll(ReadAllRequest) returns (ReadAllResponse);
 }
