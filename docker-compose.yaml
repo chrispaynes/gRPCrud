@@ -1,5 +1,36 @@
 version: '3'
+networks:
+  proxy:
+    driver: bridge
 services:
+  grpc-client:
+    container_name: grpc-client
+    build:
+      context: .
+      args:
+        - SERVICE=start-grpc-client.sh
+    image:
+      grpc-client:latest
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - ${GOPATH}/src/github.com/chrispaynes/gRPCrud:${GOPATH}/src/github.com/chrispaynes/gRPCrud
+  grpc-server:
+    container_name: grpc-server
+    build:
+      context: .
+      args:
+        - SERVICE=start-grpc-server.sh
+    image:
+      grpc-server:latest
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - "9090:9090"
+    volumes:
+      - ${GOPATH}/src/github.com/chrispaynes/gRPCrud:${GOPATH}/src/github.com/chrispaynes/gRPCrud
   postgres:
     container_name: grpcrud-postgres
     build:
@@ -8,6 +39,8 @@ services:
     image:
       grpcrud-postgrest:latest
     restart: always
+    networks:
+      - proxy
     env_file:
       - ${GOPATH}/src/github.com/chrispaynes/gRPCrud/docker/postgres/postgres.env
     ports:
