@@ -5,7 +5,7 @@ package v1;
 import "google/protobuf/timestamp.proto";
 
 message Todo {
-    int64 id = 1;
+    int64 todo_id = 1;
     string title = 2;
     string description = 3;
     google.protobuf.Timestamp reminder = 4;
